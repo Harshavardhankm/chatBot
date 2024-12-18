@@ -38,8 +38,7 @@ const generateBotResponse = async (incomingMessageDiv) => {
     }
 
     try{
-        const response = 
-        fetch(API_URl, requestOptions);
+        const response = await fetch(API_URl, requestOptions);
         const data = await response.json();
         if(!response.ok) throw new Error(data.error.message);
 
@@ -61,6 +60,7 @@ const handleOutgoingmessage = (e) => {
     e.preventDefault();
     userData.message = messageInput.value.trim();
     messageInput.value = "";
+    fileUploadWrapper.querySelector("img").style.display = "none";
 
     
     const messageContent =  `<div class="message-text"></div>
@@ -104,11 +104,9 @@ fileInput.addEventListener("change", () => {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        const abc = e.target.result;
-        fileUploadWrapper.querySelector("img").src = abc;
+        fileUploadWrapper.querySelector("img").src = e.target.result;
         fileUploadWrapper.classList.add("file-uploaded");
         fileUploadWrapper.querySelector("img").style.display = "block";
-
         const base64String = e.target.result.split(",")[1];
 
         userData.file = {
